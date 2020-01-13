@@ -124,6 +124,30 @@ public function resultSetFP()
  }
  return $this->frequentItem;
 }
+
+//fungsi menghitung supportcount setiap brand dalam transaksi
+public function countSupportCount()
+{
+  foreach ($this->frequentItem as $key => $value) {
+    foreach ($value as $k => $v) {
+      if (empty($this->supportCount[$v])) {
+        $this->supportCount[$v]=1;
+      }else {
+        $this->supportCount[$v]= $this->supportCount[$v] +1;
+      }
+    }
+}
+return $this->supportCount;
+}
+
+public function orderBySupportCount()
+{
+  ksort($this->supportCount);
+  arsort($this->supportCount);
+  return $this->supportCount;
+}
+
+
 }
 
  ?>

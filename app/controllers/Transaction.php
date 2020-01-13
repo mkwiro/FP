@@ -10,6 +10,22 @@ class Transaction extends Controller
         $this->view('transaction/index', $data);
         $this->view('templates/footer');
     }
+    public function supportCountNotOrdered()
+    {
+        $data['judul']='Support Count Not Ordered';
+        $data['transactions']=$this->model('Transactions_model')->SupportCount();
+        $this->view('templates/header', $data);
+        $this->view('transaction/supportcountnotordered', $data);
+        $this->view('templates/footer');
+    }
+    public function supportCountOrdered()
+    {
+        $data['judul']='Support Count Not Ordered';
+        $data['transactions']=$this->model('Transactions_model')->supportCountOrdered();
+        $this->view('templates/header', $data);
+        $this->view('transaction/supportcountordered', $data);
+        $this->view('templates/footer');
+    }
 
 
 }
