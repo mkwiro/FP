@@ -3,7 +3,6 @@
             <div class="col-6">
         <h1>Transaksi Dagadu</h1>
         <?php  
-        
         var_dump($data['transactions']);       
         ?>
             </div>

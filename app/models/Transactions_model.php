@@ -11,7 +11,6 @@ class Transactions_model
         $query="SELECT * FROM fpgrowth";
         $this->db->query($query);
         return $this->db->resultSetFP();
-        
     }
 }
 

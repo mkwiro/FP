@@ -17,16 +17,15 @@ class FPGrowth
         $this->orderedFrequentItem=array();
     }
     //get transaksi array
-  public function get()
+  public function set($t)
   {
-    echo "<pre>";
-    var_dump($this->frequentItem);
-    // print_r($this->frequentItem);
-    echo "</pre>";
+ if(is_array($t))
+  {
+$this->frequentItem[] = $t;
+}
   }
 
+
+  
 }
-
-
-
 ?>
