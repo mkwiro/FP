@@ -10,4 +10,6 @@ class Transaction extends Controller
         $this->view('transaction/index', $data);
         $this->view('templates/footer');
     }
+
+
 }

@@ -4,6 +4,7 @@
  */
 class Database
 {
+  //database
   private $host = DB_HOST;
   private $user = DB_USER;
   private $pass = DB_PASS;
@@ -11,6 +12,14 @@ class Database
 
   private $dbh;
   private $stmt;
+
+  //fpgrowth
+  public $frequentItem;
+  public $minimumSupportCount;
+  public $minConfidence;
+  public $supportCount;
+  public $orderedFrequentItem;
+  public $FPTree;
 
   public function __construct()
   {
@@ -31,6 +40,13 @@ class Database
     echo "Connection Failed:";
     die($e->getMessage()); //kirim message error
   }
+
+  //fpgrowth
+  $this->frequentItem = array();
+  $this->minimumSupportCount = 3;
+  $this->minConfidence = 60 * 0.01;
+  $this->supportCount 	= array();
+  $this->orderedFrequentItem = array();
   }
 
 //func query SQL
@@ -102,7 +118,11 @@ public function resultSetFP()
         unset($frequentItem[$key][$i]);
     }
 }
- return $frequentItem;
+//set hasil database ke array frequent item
+ if(is_array($frequentItem)){
+   $this->frequentItem=$frequentItem;
+ }
+ return $this->frequentItem;
 }
 }
 

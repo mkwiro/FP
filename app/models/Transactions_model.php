@@ -2,6 +2,7 @@
 class Transactions_model
 {
     private $db;
+
     public function __construct()
     {
         $this->db = new Database;
@@ -12,6 +13,7 @@ class Transactions_model
         $this->db->query($query);
         return $this->db->resultSetFP();
     }
+
 }
 
 
