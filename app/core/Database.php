@@ -1,6 +1,6 @@
 <?php
 /**
- *
+ * data base fp growth
  */
 class Database
 {
@@ -73,39 +73,6 @@ public function resultSet()
   $this->execute();
   return $this->stmt->fetchAll(PDO::FETCH_ASSOC);
 }
-//
-public function resultSetFP()
-{
-  $this->execute();
-  $bigarray=array();
-  $res = $this->stmt->fetchAll(PDO::FETCH_GROUP | PDO::FETCH_ASSOC);
-
-  foreach ($res as $key => $value) {
-    foreach ($value as $i => $v) {
-        foreach ($v as $b) {
-            $res[$key][$b] = $b;
-        }
-        unset($res[$key][$i]);
-    }
-}
- return $res;
-}
-
-//function remove duplicate
-function unique_multidim_array($array, $key) {
-  $temp_array = array();
-  $i = 0;
-  $key_array = array();
- 
-  foreach($array as $val) {
-      if (!in_array($val[$key], $key_array)) {
-          $key_array[$i] = $val[$key];
-          $temp_array[$i] = $val;
-      }
-      $i++;
-  }
-  return $temp_array;
-}
 
 //fecth 1 data
 public function single()
@@ -119,7 +86,24 @@ public function rowCount()
 {
   return $this->stmt->rowCount();
 }
-}
 
+
+//FP Growth database fetch
+public function resultSetFP()
+{
+  $this->execute();
+  $frequentItem = $this->stmt->fetchAll(PDO::FETCH_GROUP | PDO::FETCH_ASSOC);
+
+  foreach ($frequentItem as $key => $value) {
+    foreach ($value as $i => $v) {
+        foreach ($v as $b) {
+            $frequentItem[$key][$b] = $b;
+        }
+        unset($frequentItem[$key][$i]);
+    }
+}
+ return $frequentItem;
+}
+}
 
  ?>
