@@ -45,7 +45,7 @@ class Database
   //fpgrowth
   $this->frequentItem = array();
   $this->totalTransaction = array();
-  $this->minimumSupportCount = 3;
+  $this->minimumSupportCount = 100;
   $this->minConfidence = 60 * 0.01;
   $this->supportCount 	= array();
   $this->orderedFrequentItem = array();
@@ -126,7 +126,7 @@ public function resultSetFP()
  }
  return $this->frequentItem;
 }
-//menghitung semua transaksi
+//menghitung jumlah semua transaksi
 public function countTransaction()
 {
   foreach($this->frequentItem as $key => $value){
@@ -160,8 +160,22 @@ public function orderBySupportCount()
   arsort($this->supportCount);
   return $this->supportCount;
 }
-
+//remove supportcount berdasarkan minimum support
+public function removeByMinimumSupport($a)
+{
+  var_dump($a);
+  $this->supportCount=[];//construck ini dipecah dijadikan array asosiatif
+  foreach ($a as $key => $value) {//supportcount diambil valuenya
+    if ($value >= $this->minimumSupportCount) {//supportcount yang valuenya sama dengan minimum support
+      var_dump($this->minimumSupportCount);
+      $this->supportCount[$key]=$value; //pilih this->supportcount key yang valuenya itu
+      var_dump($this->supportCount);
+    }
+  }
+return $this->supportCount;
+}
 
 }
+
 
  ?>

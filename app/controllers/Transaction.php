@@ -32,6 +32,15 @@ class Transaction extends Controller
     $data['judul']='Total Transaksi';
     $data['transactions']= $this->model('Transactions_model')->countTotalTransaction();
     $this->view('templates/header', $data);
+    $this->view('transaction/countalltransaction2', $data);
+    $this->view('templates/footer');
+    }
+    
+    public function removeOlehMinimumSupport()
+    {
+    $data['judul']='Remove By Minimum Support';
+    $data['transactions']= $this->model('Transactions_model')->removeMinSup();
+    $this->view('templates/header', $data);
     $this->view('transaction/countalltransaction', $data);
     $this->view('templates/footer');
     }
