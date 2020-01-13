@@ -14,6 +14,7 @@ class Database
   private $stmt;
 
   //fpgrowth
+  public $totalTransaction;
   public $frequentItem;
   public $minimumSupportCount;
   public $minConfidence;
@@ -43,6 +44,7 @@ class Database
 
   //fpgrowth
   $this->frequentItem = array();
+  $this->totalTransaction = array();
   $this->minimumSupportCount = 3;
   $this->minConfidence = 60 * 0.01;
   $this->supportCount 	= array();
@@ -124,7 +126,18 @@ public function resultSetFP()
  }
  return $this->frequentItem;
 }
-
+//menghitung semua transaksi
+public function countTransaction()
+{
+  foreach($this->frequentItem as $key => $value){
+    if(empty($this->totalTransaction)){
+      $this->totalTransaction=1;
+    }else{
+      $this->totalTransaction=$this->totalTransaction +1;
+    }
+  }
+  return $this->totalTransaction;
+}
 //fungsi menghitung supportcount setiap brand dalam transaksi
 public function countSupportCount()
 {
@@ -140,6 +153,7 @@ public function countSupportCount()
 return $this->supportCount;
 }
 
+//mengurutkan supportcount
 public function orderBySupportCount()
 {
   ksort($this->supportCount);

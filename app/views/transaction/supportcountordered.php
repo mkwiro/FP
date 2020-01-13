@@ -1,7 +1,7 @@
 <div class="container mt-5">
         <div class="row">
             <div class="col-6">
-    <h1>Support Count Not Ordered</h1>
+    <h1>Support Count Ordered</h1>
     <div class="list-group">
     <?php foreach($data['transactions'] as $brands => $supportCountBrandNotOrdered) : ?>
         <a href="#" class="list-group-item list-group-item-action">

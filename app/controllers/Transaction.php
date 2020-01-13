@@ -1,5 +1,4 @@
 <?php
-
 class Transaction extends Controller
 {
     public function index()
@@ -10,6 +9,7 @@ class Transaction extends Controller
         $this->view('transaction/index', $data);
         $this->view('templates/footer');
     }
+
     public function supportCountNotOrdered()
     {
         $data['judul']='Support Count Not Ordered';
@@ -25,6 +25,15 @@ class Transaction extends Controller
         $this->view('templates/header', $data);
         $this->view('transaction/supportcountordered', $data);
         $this->view('templates/footer');
+    }
+
+    public function countAllTransaction()
+    {
+    $data['judul']='Total Transaksi';
+    $data['transactions']= $this->model('Transactions_model')->countTotalTransaction();
+    $this->view('templates/header', $data);
+    $this->view('transaction/countalltransaction', $data);
+    $this->view('templates/footer');
     }
 
 

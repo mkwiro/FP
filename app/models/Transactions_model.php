@@ -1,12 +1,14 @@
 <?php
 class Transactions_model
 {
+    private $totaltransactions;
     private $db;
 
     public function __construct()
     {
         $this->db = new Database;
     }  
+
     public function getAllTransactions()
     {
         $query="SELECT * FROM fpgrowth";
@@ -29,6 +31,13 @@ class Transactions_model
         return $this->db->orderBySupportCount();
     }
 
+    public function countTotalTransaction()
+    {
+        $query="SELECT * FROM fpgrowth";
+        $this->db->query($query);
+        $this->db->resultSetFP();
+        return $this->db->countTransaction();
+    }
 
 }
 
