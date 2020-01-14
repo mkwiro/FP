@@ -8,8 +8,8 @@
       echo "</pre>";
     ?> -->
 <ul class="list-group">
-<?php foreach ($data['transactions'] as $value):?>
-<li class="list-group-item "><?= $value['item']?>
+<?php foreach ($data['transactions'] as $key => $value):?>
+<li class="list-group-item "><?= 'NULL'?>
 <span class="badge badge-primary badge-pill"><?= $value['count']?></span>
 </li> 
     <ul class="list-group pl-1">
