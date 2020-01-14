@@ -45,7 +45,7 @@ class Database
   //fpgrowth
   $this->frequentItem = array();
   $this->totalTransaction = array();
-  $this->minimumSupportCount = 100;
+  $this->minimumSupportCount = 5 * 0.01;
   $this->minConfidence = 60 * 0.01;
   $this->supportCount 	= array();
   $this->orderedFrequentItem = array();
@@ -161,21 +161,146 @@ public function orderBySupportCount()
   return $this->supportCount;
 }
 //remove supportcount berdasarkan minimum support
-public function removeByMinimumSupport($a)
+public function removeByMinimumSupport($supportCount)
 {
-  var_dump($a);
+  $this->minimumSupportCount=$this->minimumSupportCount * $this->totalTransaction;
   $this->supportCount=[];//construck ini dipecah dijadikan array asosiatif
-  foreach ($a as $key => $value) {//supportcount diambil valuenya
+  foreach ($supportCount as $key => $value) {//supportcount diambil valuenya
     if ($value >= $this->minimumSupportCount) {//supportcount yang valuenya sama dengan minimum support
-      var_dump($this->minimumSupportCount);
       $this->supportCount[$key]=$value; //pilih this->supportcount key yang valuenya itu
-      var_dump($this->supportCount);
     }
   }
 return $this->supportCount;
 }
 
+public function orderFrequentItem($frequentItem, $supportCount)
+{
+  foreach ($frequentItem as $k => $v) {
+    $ordered =[];
+    foreach ($supportCount as $key => $value) {
+      if (isset($v[$key])) { //cek true false yang ada antara frequent item dan supportcount
+        $ordered[$key]=$v[$key];
+      }
+    }
+$this->orderedFrequentItem[$k]=$ordered;
+  }
+  return $this->orderedFrequentItem;
 }
 
+public function buildFPTree($orderedFrequentItem)
+{
+  $FPTree[] 	= array(
+    'item'	=> 'null',
+    'count'	=> 0,
+    'child'	=> null,
+  );
+  $FPTree2[] 	= array();
+  if(is_array($orderedFrequentItem))
+  {
+    $i 	= 0;
+    foreach ($orderedFrequentItem as $orderedFrequentItemKey => $orderedFrequentItemValue) {
+      $FPTreeTemp 	= $FPTree[0];
+      $FPTreeTempKey 	= array(0);
+      foreach ($orderedFrequentItemValue as $itemKey => $itemValue) {
+        array_push($FPTreeTempKey, $itemValue);
+
+//switch untuk membuat fp tree dari array multidimensional
+//jumlah case dibuat bedasarkan prediksi jumlah banyaknya varian brand yang akan terjadi dalam satu transaksi
+        switch ((count($FPTreeTempKey))) {
+          case 2:
+            if(empty($FPTree[0]['child'][$itemValue]))
+            {
+              $FPTree[0]['child'][$itemValue] 	= array(
+                'item'	=> $itemValue,
+                'count'	=> 1,
+                'child'	=> null,
+              );
+            }else{
+              $FPTree[0]['child'][$itemValue]['count'] = $FPTree[0]['child'][$itemValue]['count'] + 1;
+            }
+            
+            break;
+
+          case 3:
+            if(empty($FPTree[0]['child'][$FPTreeTempKey[1]]['child'][$itemValue]))
+            {
+              $FPTree[0]['child'][$FPTreeTempKey[1]]['child'][$itemValue] = array(
+                'item'	=> $itemValue,
+                'count'	=> 1,
+                'child'	=> null,
+              );
+            }else{
+              $FPTree[0]['child'][$FPTreeTempKey[1]]['child'][$itemValue]['count'] = $FPTree[0]['child'][$FPTreeTempKey[1]]['child'][$itemValue]['count'] + 1;
+            }
+            
+            break;
+
+          case 4:
+            if(empty($FPTree[0]['child'][$FPTreeTempKey[1]]['child'][$FPTreeTempKey[2]]['child'][$itemValue]))
+            {
+              $FPTree[0]['child'][$FPTreeTempKey[1]]['child'][$FPTreeTempKey[2]]['child'][$itemValue] 	= array(
+                'item'	=> $itemValue,
+                'count'	=> 1,
+                'child'	=> null,
+              );
+            }else{
+              $FPTree[0]['child'][$FPTreeTempKey[1]]['child'][$FPTreeTempKey[2]]['child'][$itemValue]['count'] = $FPTree[0]['child'][$FPTreeTempKey[1]]['child'][$FPTreeTempKey[2]]['child'][$itemValue]['count'] + 1;
+            }
+            
+            break;
+
+          case 5:
+            if(empty($FPTree[0]['child'][$FPTreeTempKey[1]]['child'][$FPTreeTempKey[2]]['child'][$FPTreeTempKey[3]]['child'][$itemValue]))
+            {
+              $FPTree[0]['child'][$FPTreeTempKey[1]]['child'][$FPTreeTempKey[2]]['child'][$FPTreeTempKey[3]]['child'][$itemValue] 	= array(
+                'item'	=> $itemValue,
+                'count'	=> 1,
+                'child'	=> null,
+              );
+            }else{
+              $FPTree[0]['child'][$FPTreeTempKey[1]]['child'][$FPTreeTempKey[2]]['child'][$FPTreeTempKey[3]]['child'][$itemValue]['count'] = $FPTree[0]['child'][$FPTreeTempKey[1]]['child'][$FPTreeTempKey[2]]['child'][$FPTreeTempKey[3]]['child'][$itemValue]['count'] + 1;
+            }
+            
+            break;
+
+            case 6:
+              if(empty($FPTree[0]['child'][$FPTreeTempKey[1]]['child'][$FPTreeTempKey[2]]['child'][$FPTreeTempKey[3]]['child'][$FPTreeTempKey[4]]['child'][$itemValue]))
+              {
+                $FPTree[0]['child'][$FPTreeTempKey[1]]['child'][$FPTreeTempKey[2]]['child'][$FPTreeTempKey[3]][$FPTreeTempKey[4]]['child'][$itemValue] 	= array(
+                  'item'	=> $itemValue,
+                  'count'	=> 1,
+                  'child'	=> null,
+                );
+              }else{
+                $FPTree[0]['child'][$FPTreeTempKey[1]]['child'][$FPTreeTempKey[2]]['child'][$FPTreeTempKey[3]][$FPTreeTempKey[4]]['child'][$itemValue]['count'] = $FPTree[0]['child'][$FPTreeTempKey[1]]['child'][$FPTreeTempKey[2]]['child'][$FPTreeTempKey[3]][$FPTreeTempKey[4]]['child'][$itemValue]['count'] + 1;
+              }
+              
+              break;
+
+              case 7:
+                if(empty($FPTree[0]['child'][$FPTreeTempKey[1]]['child'][$FPTreeTempKey[2]]['child'][$FPTreeTempKey[3]]['child'][$FPTreeTempKey[4]]['child'][$FPTreeTempKey[5]]['child'][$itemValue]))
+                {
+                  $FPTree[0]['child'][$FPTreeTempKey[1]]['child'][$FPTreeTempKey[2]]['child'][$FPTreeTempKey[3]][$FPTreeTempKey[4]]['child'][$FPTreeTempKey[5]]['child'][$itemValue] 	= array(
+                    'item'	=> $itemValue,
+                    'count'	=> 1,
+                    'child'	=> null,
+                  );
+                }else{
+                  $FPTree[0]['child'][$FPTreeTempKey[1]]['child'][$FPTreeTempKey[2]]['child'][$FPTreeTempKey[3]][$FPTreeTempKey[4]]['child'][$FPTreeTempKey[5]]['child'][$itemValue]['count'] = $FPTree[0]['child'][$FPTreeTempKey[1]]['child'][$FPTreeTempKey[2]]['child'][$FPTreeTempKey[3]][$FPTreeTempKey[4]]['child'][$FPTreeTempKey[5]]['child'][$itemValue]['count'] + 1;
+                }
+                
+                break;
+          default:
+
+            break;
+        }
+      }
+    }
+  }
+  return $FPTree;
+}
+
+
+}
 
  ?>

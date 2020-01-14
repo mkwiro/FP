@@ -26,22 +26,36 @@ class Transaction extends Controller
         $this->view('transaction/supportcountordered', $data);
         $this->view('templates/footer');
     }
-
-    public function countAllTransaction()
+    public function countTotalTransaction()
     {
-    $data['judul']='Total Transaksi';
-    $data['transactions']= $this->model('Transactions_model')->countTotalTransaction();
+        $data['judul']='Support Count Not Ordered';
+        $data['transactions']=$this->model('Transactions_model')->countTotalTransaction();
+        $this->view('templates/header', $data);
+        $this->view('transaction/counttotaltransaction', $data);
+        $this->view('templates/footer');
+    }
+    public function removeMinimumSupport()
+    {
+    $data['judul']='Remove Minimum Support';
+    $data['transactions']= $this->model('Transactions_model')->removeMinimumSupport();
     $this->view('templates/header', $data);
-    $this->view('transaction/countalltransaction2', $data);
+    $this->view('transaction/removeminimumsupport', $data);
     $this->view('templates/footer');
     }
-    
-    public function removeOlehMinimumSupport()
+    public function orderFrequentItemByMinSup()
     {
-    $data['judul']='Remove By Minimum Support';
-    $data['transactions']= $this->model('Transactions_model')->removeMinSup();
+    $data['judul']='Remove Minimum Support';
+    $data['transactions']= $this->model('Transactions_model')->orderFrequentItemByMinSup();
     $this->view('templates/header', $data);
-    $this->view('transaction/countalltransaction', $data);
+    $this->view('transaction/orderfrequentitembyminsup', $data);
+    $this->view('templates/footer');
+    }
+    public function FPTree()
+    {
+    $data['judul']='Remove Minimum Support';
+    $data['transactions']= $this->model('Transactions_model')->FpTree();
+    $this->view('templates/header', $data);
+    $this->view('transaction/fptree', $data);
     $this->view('templates/footer');
     }
 

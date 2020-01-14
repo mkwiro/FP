@@ -39,7 +39,7 @@ class Transactions_model
         return $this->db->countTransaction();
     }
 
-    public function removeMinSup()
+    public function removeMinimumSupport()
     {
         $query="SELECT * FROM fpgrowth";
         $this->db->query($query);
@@ -47,22 +47,33 @@ class Transactions_model
         $this->db->countTransaction();
         $this->db->countSupportCount();
         $this->db->orderBySupportCount();
-        var_dump($this->db->supportCount);
-        var_dump($this->db->removeByMinimumSupport($this->db->supportCount));
         return $this->db->removeByMinimumSupport($this->db->supportCount);
-        
     }
 
-    // public function removeWithMinimumSupport()
-    // {
-    //     $query="SELECT * FROM fpgrowth";
-    //     $this->db->query($query);
-    //     $this->db->resultSetFP();
-    //     $this->db->countTransaction();
-    //     $this->db->countSupportCount();
-    //     $this->db->orderBySupportCount();
-    //     return $this->db->removeByMinimumSupport($this->db->supportCount);
-    // }
+    public function orderFrequentItemByMinSup()
+    {
+        $query="SELECT * FROM fpgrowth";
+        $this->db->query($query);
+        $this->db->resultSetFP();
+        $this->db->countTransaction();
+        $this->db->countSupportCount();
+        $this->db->orderBySupportCount();
+        $this->db->removeByMinimumSupport($this->db->supportCount);
+        return $this->db->orderFrequentItem($this->db->frequentItem, $this->db->supportCount);
+    }
+
+    public function FPTree()
+    {
+        $query="SELECT * FROM fpgrowth";
+        $this->db->query($query);
+        $this->db->resultSetFP();
+        $this->db->countTransaction();
+        $this->db->countSupportCount();
+        $this->db->orderBySupportCount();
+        $this->db->removeByMinimumSupport($this->db->supportCount);
+        $this->db->orderFrequentItem($this->db->frequentItem, $this->db->supportCount);
+        return $this->db->buildFPTree($this->db->orderedFrequentItem);
+    }
 
 }
 
