@@ -2,17 +2,12 @@
         <div class="row">
             <div class="col-6">
     <h1>FPTREE</h1>  
-    <!-- <?php 
-      echo "<pre>";
-      print_r($data['transactions']);
-      echo "</pre>";
-    ?> -->
 <ul class="list-group">
 <?php foreach ($data['transactions'] as $key => $value):?>
 <li class="list-group-item "><?= 'NULL'?>
 <span class="badge badge-primary badge-pill"><?= $value['count']?></span>
 </li> 
-    <ul class="list-group pl-1">
+    <ul class="list-group">
     <?php foreach ($value['child'] as $value1):?>
     <li class="list-group-item list-group-item-primary"><?= $value1['item']?>
     <span class="badge badge-primary badge-pill"><?= $value1['count']?></span>
