@@ -58,6 +58,29 @@ class Transaction extends Controller
     $this->view('transaction/fptree', $data);
     $this->view('templates/footer');
     }
-
+    public function conPatternBase()
+    {
+    $data['judul']='Remove Minimum Support';
+    $data['transactions']= $this->model('Transactions_model')->conPatternBase();
+    $this->view('templates/header', $data);
+    $this->view('transaction/conpatternbase', $data);
+    $this->view('templates/footer');
+    }
+    public function getChildKeys()
+    {
+    $data['judul']='getChildKeys';
+    $data['transactions']= $this->model('Transactions_model')->getChildKeys();
+    $this->view('templates/header', $data);
+    $this->view('transaction/getchildkeys', $data);
+    $this->view('templates/footer');
+    }
+    public function searchRecord()
+    {
+    $data['judul']='search Record';
+    $data['transactions']= $this->model('Transactions_model')->searchRec();
+    $this->view('templates/header', $data);
+    $this->view('transaction/searchrecord', $data);
+    $this->view('templates/footer');
+    }
 
 }

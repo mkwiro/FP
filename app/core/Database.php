@@ -21,6 +21,9 @@ class Database
   public $supportCount;
   public $orderedFrequentItem;
   public $FPTree;
+  public $conditionalpatternbase;
+
+  private $currentMultiArrayExec = 0;
 
   public function __construct()
   {
@@ -49,6 +52,7 @@ class Database
   $this->minConfidence = 60 * 0.01;
   $this->supportCount 	= array();
   $this->orderedFrequentItem = array();
+  $this->FPTree=array();
   }
 
 //func query SQL
@@ -297,10 +301,54 @@ public function buildFPTree($orderedFrequentItem)
       }
     }
   }
-  return $FPTree;
+  $this->FPTree=$FPTree;
+  return $this->FPTree;
+}
+
+function getChildKey1($FPTree)
+{
+  function getChildKey($FPTree){
+    $result = [];
+    if (isset($FPTree['child'])){
+      foreach ($FPTree['child'] as $key => $value){
+        $result[$key]=getChildKey($value);
+      }
+    }
+    if (empty($result)){
+      return 'gak ada array';
+    }
+    return $result;
+  }
+  $output = [];
+  foreach ($FPTree as $index => $child){
+    $output[$index]=getChildKey($child);
+  }
+return $output;
+}
+
+public function searchRec($haystack, $needle, $pathId=Array(), $pathIndex=Array())
+{
+  foreach($haystack as $index => $item){
+
+    $pathId[] = $item['item'];
+    $pathIndex = $index;
+    if($item['item'] == $needle){
+      $returnObject = new stdClass();
+      $returnObject->match = $item;
+      $returnObject->pathId = $pathId;
+      $returnObject->pathIndex= $pathIndex;
+      return $returnObject;
+    }
+    if(isset($item['child'])){
+      $result=searchRec($item['child'], $needle, $pathId, $pathIndex);
+      if($result){
+        return $result;
+      }
+    }
+  }
+  return false;
 }
 
 
 }
-
  ?>

@@ -1,7 +1,14 @@
 <div class="container mt-5">
         <div class="row">
-            <div class="col-6">
+            <div class="col-15">
     <h1>FPTREE</h1>  
+<?php 
+echo "<pre>";
+print_r($data['transactions']);
+echo "</pre>";
+?>
+
+
 <ul class="list-group">
 <?php foreach ($data['transactions'] as $key => $value):?>
 <li class="list-group-item "><?= 'NULL'?>

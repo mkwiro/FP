@@ -74,6 +74,33 @@ class Transactions_model
         $this->db->orderFrequentItem($this->db->frequentItem, $this->db->supportCount);
         return $this->db->buildFPTree($this->db->orderedFrequentItem);
     }
+    public function getChildKeys()
+    {
+        $query="SELECT * FROM fpgrowth";
+        $this->db->query($query);
+        $this->db->resultSetFP();
+        $this->db->countTransaction();
+        $this->db->countSupportCount();
+        $this->db->orderBySupportCount();
+        $this->db->removeByMinimumSupport($this->db->supportCount);
+        $this->db->orderFrequentItem($this->db->frequentItem, $this->db->supportCount);
+        $this->db->buildFPTree($this->db->orderedFrequentItem);
+        return $this->db->getChildKey1($this->db->FPTree);
+    }
+
+    public function searchRec()
+    {
+        $query="SELECT * FROM fpgrowth";
+        $this->db->query($query);
+        $this->db->resultSetFP();
+        $this->db->countTransaction();
+        $this->db->countSupportCount();
+        $this->db->orderBySupportCount();
+        $this->db->removeByMinimumSupport($this->db->supportCount);
+        $this->db->orderFrequentItem($this->db->frequentItem, $this->db->supportCount);
+        $this->db->buildFPTree($this->db->orderedFrequentItem);
+        return $this->db->searchRec($this->db->FPTree, 'DGD');
+    }
 
 }
 
