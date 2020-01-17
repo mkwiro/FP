@@ -1,7 +1,7 @@
 <?php
 
 //config database
-define('BASEURL', 'http://localhost:8080/skripsiFPGrowth/public/');
+define('BASEURL', 'http://localhost/skripsiFPGrowth/public/');
 define('DB_HOST', 'localhost');
 define('DB_USER', 'root');
 define('DB_PASS', '');

@@ -4,7 +4,7 @@
     <?php 
     
     echo "<pre>";
-    print_r($data['transactions']);
+    var_dump($data['transactions']);
     echo "</pre>";
     ?>
       

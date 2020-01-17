@@ -328,27 +328,36 @@ return $output;
 
 public function searchRec($haystack, $needle, $pathId=Array(), $pathIndex=Array())
 {
-  foreach($haystack as $index => $item){
+  foreach($haystack as $index => $item) {
+    // add the current path to pathId-array
+    $pathId[] = $item['count'];
+    // add the current index to pathIndex-array
+    $pathIndex[] = $index;
+    // check if we have a match
+    if($item['item'] == $needle) {
+        // return the match
+        $returnObject = new stdClass();
+        // the current item where we have the match
+        $returnObject->match = $item;   
+        // path of Id's (1, 11, 112, 1121)
+        $returnObject->pathId = $pathId; 
+        // path of indexes (0,0,1,..) - you might need this to access the item directly
+        $returnObject->pathIndex = $pathIndex; 
+        return $returnObject;
+    }
 
-    $pathId[] = $item['item'];
-    $pathIndex = $index;
-    if($item['item'] == $needle){
-      $returnObject = new stdClass();
-      $returnObject->match = $item;
-      $returnObject->pathId = $pathId;
-      $returnObject->pathIndex= $pathIndex;
-      return $returnObject;
+    if(isset($item['Children']) && count($item['Children'])>0) {
+        // if this item has children, we call the same function (recursively) 
+        // again to search inside those children:
+        $result =$this->searchRec($item['Children'], $needle, $pathId, $pathIndex);
+        if($result) {
+            // if that search was successful, return the match-object
+            return $result;
+        }
     }
-    if(isset($item['child'])){
-      $result=searchRec($item['child'], $needle, $pathId, $pathIndex);
-      if($result){
-        return $result;
-      }
-    }
-  }
-  return false;
 }
-
+return false;
+}
 
 }
  ?>
